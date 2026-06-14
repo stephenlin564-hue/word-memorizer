@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>单词复习小程序</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Vocabulary Trainer</p>
+          <h1>英语单词复习</h1>
+        </div>
+        <div class="actions">
+          <button class="icon-button" id="exportBtn" type="button" title="导出数据" aria-label="导出数据">
+            <span aria-hidden="true">↓</span>
+          </button>
+          <button class="icon-button danger" id="resetBtn" type="button" title="清空本地数据" aria-label="清空本地数据">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="stats-grid" aria-label="学习统计">
+        <article>
+          <span>总单词</span>
+          <strong id="totalWords">0</strong>
+        </article>
+        <article>
+          <span>今日待复习</span>
+          <strong id="dueWords">0</strong>
+        </article>
+        <article>
+          <span>薄弱词</span>
+          <strong id="weakWords">0</strong>
+        </article>
+        <article>
+          <span>已熟练</span>
+          <strong id="masteredWords">0</strong>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <aside class="side-panel" aria-label="单词管理">
+          <div class="panel-header">
+            <h2>词库</h2>
+            <button id="loadSampleBtn" type="button">载入示例</button>
+          </div>
+
+          <form id="wordForm" class="word-form">
+            <label>
+              <span>英文</span>
+              <input id="wordInput" name="word" autocomplete="off" placeholder="abandon" required />
+            </label>
+            <label>
+              <span>中文释义</span>
+              <input id="meaningInput" name="meaning" autocomplete="off" placeholder="放弃；舍弃" required />
+            </label>
+            <label>
+              <span>例句</span>
+              <textarea id="exampleInput" name="example" rows="3" placeholder="Never abandon your curiosity."></textarea>
+            </label>
+            <button class="primary" type="submit">添加单词</button>
+          </form>
+
+          <details class="import-box">
+            <summary>批量导入</summary>
+            <p>每行一个：英文,中文释义,例句</p>
+            <textarea id="bulkInput" rows="6" spellcheck="false" placeholder="fragile,脆弱的,The glass is fragile."></textarea>
+            <button id="bulkImportBtn" type="button">导入</button>
+          </details>
+
+          <div class="filter-row" role="tablist" aria-label="词库筛选">
+            <button class="filter active" data-filter="all" type="button">全部</button>
+            <button class="filter" data-filter="due" type="button">待复习</button>
+            <button class="filter" data-filter="weak" type="button">薄弱</button>
+            <button class="filter" data-filter="mastered" type="button">熟练</button>
+          </div>
+
+          <div class="word-list" id="wordList" aria-live="polite"></div>
+        </aside>
+
+        <section class="study-panel" aria-label="背单词">
+          <div class="study-toolbar">
+            <div>
+              <h2>复习卡片</h2>
+              <p id="queueMeta">暂无复习队列</p>
+            </div>
+            <div class="toggle-wrap">
+              <label>
+                <input id="autoWeakToggle" type="checkbox" checked />
+                <span>薄弱词加频</span>
+              </label>
+            </div>
+          </div>
+
+          <article class="card-stage" id="cardStage">
+            <div class="empty-state" id="emptyState">
+              <h3>先添加一些单词</h3>
+              <p>系统会根据你的反馈安排复习。背过但不熟的词，会在本轮和后续更频繁出现。</p>
+            </div>
+
+            <div class="flash-card hidden" id="flashCard">
+              <div class="card-topline">
+                <span id="cardTag">新词</span>
+                <span id="cardProgress">0 / 0</span>
+              </div>
+              <h3 id="cardWord"></h3>
+              <button class="ghost" id="speakBtn" type="button">发音</button>
+              <div class="answer hidden" id="answerBox">
+                <p id="cardMeaning"></p>
+                <blockquote id="cardExample"></blockquote>
+              </div>
+              <button class="primary reveal" id="revealBtn" type="button">显示答案</button>
+              <div class="grade-row hidden" id="gradeRow">
+                <button data-grade="again" type="button">不会</button>
+                <button data-grade="hard" type="button">不熟</button>
+                <button data-grade="good" type="button">记得</button>
+                <button data-grade="easy" type="button">熟练</button>
+              </div>
+            </div>
+          </article>
+
+          <section class="review-log" aria-label="最近复习记录">
+            <h2>最近反馈</h2>
+            <ol id="reviewLog"></ol>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
